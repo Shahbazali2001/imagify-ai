@@ -30,7 +30,7 @@ const Header = () => {
             )}
             
         </div>
-        <p className='text-sm text-stone-500 mt-2'>Generated images by Imagify</p>
+        <p className='text-sm text-neutral-600 mt-2'>Generated images by Imagify</p>
     </div>
   )
 }
