@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 const Navbar = () => {
+
   const { user } = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ const Navbar = () => {
         {user ? (
           // Logged In User
           <div className="flex justify-between items-center gap-4 sm:gap-3 ">
-            <button className="flex items-center gap-2 bg-blue-100 px-4 sm:px-6 py-1.5 sm:py-3 rounded-full hover:scale-105 transition-all duration-300">
+            <button onClick={() => navigate("/buy-credit")} className="flex items-center gap-2 bg-blue-100 px-4 sm:px-6 py-1.5 sm:py-3 rounded-full hover:scale-105 transition-all duration-300">
               <img className="w-5 sm:w-6" src={assets.credit_star} alt="" />
               <p className="text-xs sm:text-sm font-medium text-gray-600">
                 Credits Left : 50
