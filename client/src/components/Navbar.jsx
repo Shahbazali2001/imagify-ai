@@ -1,4 +1,7 @@
-import { useState } from "react";
+// Context API 
+import { useContext } from "react";
+import  AppContext  from "../context/AppContext";
+
 
 // Assets
 import { assets } from "../assets/assets";
@@ -6,8 +9,9 @@ import { assets } from "../assets/assets";
 // React Router
 import { Link, useNavigate } from "react-router-dom";
 
+
 const Navbar = () => {
-  const [user, setUser] = useState(null);
+  const { user } = useContext(AppContext);
   const navigate = useNavigate();
 
   return (
