@@ -20,8 +20,6 @@ const Steps = () => {
                 </div>
             ))}
         </div>
-
-
     </div>
   )
 }
