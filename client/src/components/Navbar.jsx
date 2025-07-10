@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 
-  const { user } = useContext(AppContext);
+  const { user, setOpen } = useContext(AppContext);
   const navigate = useNavigate();
 
   return (
@@ -60,7 +60,7 @@ const Navbar = () => {
             >
               Pricing
             </p>
-            <button className="bg-zinc-800 text-white px-8 py-2 text-sm sm:px-10 rounded-full cursor-pointer ">
+            <button onClick={() => setOpen(true)} className="bg-zinc-800 text-white px-8 py-2 text-sm sm:px-10 rounded-full cursor-pointer ">
               Login
             </button>
           </div>
