@@ -24,7 +24,9 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-    // create user
+
+
+    // create user controller function
     const newUser = new userModel(userData);
 
     // save user
@@ -59,4 +61,67 @@ export const registerUser = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+
+
+// login user controller function
+export const loginUser = async () => {
+    try{
+        const {email, password} = req.body;
+
+        if(!email || !password){
+            return res.status(400).json({
+                success: false,
+                message: "Please fill all the fields",
+            });
+        }
+
+        const User = await userModel.findOne({email});
+
+        if(!User){
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        const isMatch = await bcrypt.compare(password, User.password);
+
+        if(!isMatch){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid credentials",
+            });
+        }
+        const token = jwt.sign(
+            {
+                id: User._id,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1h",
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "User logged in successfully",
+            user: {
+                name: User.name,
+            },
+            token,
+        });
+
+
+
+
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
 };
