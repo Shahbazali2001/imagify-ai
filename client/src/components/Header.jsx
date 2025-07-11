@@ -14,6 +14,7 @@ const Header = () => {
       if (user) {
         navigate("/result");
       } else {
+        // scrollTo(0, 0);
         setOpen(true);
       }
     };

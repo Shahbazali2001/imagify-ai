@@ -23,7 +23,7 @@ const LogIn = () => {
     } = useForm();
 
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0 z-10 backdrop-blur-sm  bg-black/20 flex justify-center items-center">
+    <div className="fixed top-0 left-0 right-0 bottom-0 z-10 backdrop-blur-sm  bg-black/20 flex justify-center items-center">
       <div className="relative w-full max-w-md bg-white p-10 sm:p-10 rounded-lg shadow-lg sm:w-96 text-indigo-300 text-sm">
         <h2 className="text-3xl font-bold mb-4 text-center text-black">
           {state === "Sign Up" ? "Create Account" : "Log In"}
