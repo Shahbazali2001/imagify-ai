@@ -4,27 +4,35 @@ import { useForm } from "react-hook-form";
 import { assets } from "../assets/assets";
 import AppContext from "../context/AppContext";
 
+import { motion as Motion } from "motion/react";
+
 const LogIn = () => {
-    const { setOpen } = useContext(AppContext);
-    const [state, setState] = useState("Sign Up");
- 
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
+  const { setOpen } = useContext(AppContext);
+  const [state, setState] = useState("Sign Up");
 
-        return () => {
-        document.body.style.overflow = "unset";
-        };
-    }, []);
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 z-10 backdrop-blur-sm  bg-black/20 flex justify-center items-center">
-      <div className="relative w-full max-w-md bg-white p-10 sm:p-10 rounded-lg shadow-lg sm:w-96 text-indigo-300 text-sm">
+      <Motion.div
+        initial={{ opacity: 0.2, y: 50 }}
+        transition={{ duration: 0.5 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="relative w-full max-w-md bg-white p-10 sm:p-10 rounded-lg shadow-lg sm:w-96 text-indigo-300 text-sm"
+      >
         <h2 className="text-3xl font-bold mb-4 text-center text-black">
           {state === "Sign Up" ? "Create Account" : "Log In"}
         </h2>
@@ -34,7 +42,13 @@ const LogIn = () => {
             : "Login To Your Account"}
         </p>
 
-        <form onSubmit={handleSubmit()}>
+        <Motion.form
+          onSubmit={handleSubmit()}
+          initial={{ opacity: 0.2, y: 50 }}
+          transition={{ duration: 0.5 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
           {/* Full Name */}
           {state === "Sign Up" && (
             <div className="border border-gray-200 mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-neutral-100">
@@ -106,7 +120,7 @@ const LogIn = () => {
           >
             {state}
           </button>
-        </form>
+        </Motion.form>
 
         {state === "Sign Up" ? (
           <p className="text-neutral-600 text-left text-sm mt-4">
@@ -136,7 +150,7 @@ const LogIn = () => {
           className="absolute top-5 right-5 cursor-pointer"
           alt=""
         />
-      </div>
+      </Motion.div>
     </div>
   );
 };
