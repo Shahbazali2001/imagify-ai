@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { assets } from "../assets/assets";
+import { motion as Motion } from "motion/react";
 
 const Result = () => {
   const [image, setImage] = useState(assets.sample_img_1);
@@ -15,7 +16,12 @@ const Result = () => {
 
   return (
     <form action="" onSubmit={submitHandler}>
-      <div className="flex flex-col items-center mt-5">
+      <Motion.div className="flex flex-col items-center mt-5"
+      initial={{ opacity: 0, y: 100 }}
+      transition={{ duration: 1.5 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      >
         <div className="relative">
           <img src={assets.sample_img_1} className="max-w-sm rounded" alt="" />
           <span className={`absolute bottom-0 left-0 h-1 bg-blue-500 ${loading ? "transition-all w-full duration-[10s]" : "w-0"} `}></span>
@@ -49,7 +55,7 @@ const Result = () => {
           <a className="border border-gray-400 text-black px-8 py-2 rounded-full cursor-pointer drop-shadow" href={image}>Download</a>
         </div>
       )}
-      </div>
+      </Motion.div>
     </form>
   );
 };
