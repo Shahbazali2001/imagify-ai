@@ -24,8 +24,6 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-
-
     // create user controller function
     const newUser = new userModel(userData);
 
@@ -48,12 +46,10 @@ export const registerUser = async (req, res) => {
       success: true,
       message: "User created successfully",
       user: {
-        name: User.name
+        name: User.name,
       },
       token,
     });
-
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -65,63 +61,91 @@ export const registerUser = async (req, res) => {
 
 
 
+
+
 // login user controller function
 export const loginUser = async () => {
-    try{
-        const {email, password} = req.body;
+  try {
+    const { email, password } = req.body;
 
-        if(!email || !password){
-            return res.status(400).json({
-                success: false,
-                message: "Please fill all the fields",
-            });
-        }
-
-        const User = await userModel.findOne({email});
-
-        if(!User){
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
-
-        const isMatch = await bcrypt.compare(password, User.password);
-
-        if(!isMatch){
-            return res.status(400).json({
-                success: false,
-                message: "Invalid credentials",
-            });
-        }
-        const token = jwt.sign(
-            {
-                id: User._id,
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "1h",
-            }
-        );
-
-        res.status(200).json({
-            success: true,
-            message: "User logged in successfully",
-            user: {
-                name: User.name,
-            },
-            token,
-        });
-
-
-
-
-
-    }catch(error){
-        console.log(error);
-        res.status(500).json({
-            success: false,
-            message: error.message,
-        });
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all the fields",
+      });
     }
+
+    const User = await userModel.findOne({ email });
+
+    if (!User) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, User.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: User._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      user: {
+        name: User.name,
+      },
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+
+
+
+// logout user controller function
+
+export const logoutUser = async (req, res) => {
+  try {
+    // Clear the token cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
+      maxAge: 3600000, // 1 hour
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    console.error("Logout error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong during logout",
+    });
+  }
 };
