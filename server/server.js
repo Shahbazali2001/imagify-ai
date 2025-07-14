@@ -3,6 +3,7 @@ import 'dotenv/config';
 import cors from "cors";
 import connectDB from "./config/mongoDB.js";
 import userRouter from "./routes/userRoutes.js";
+import imageRouter from "./routes/imageRoutes.js";
 
 
 const app = express();
@@ -21,6 +22,7 @@ await connectDB();
 
 // routes
 app.use("/api/user", userRouter);
+app.use("/api/image", imageRouter);
 
 app.get("/", (req, res)=>{
     res.status(200).send({
