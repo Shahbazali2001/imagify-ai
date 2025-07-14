@@ -64,7 +64,7 @@ export const registerUser = async (req, res) => {
 
 
 // login user controller function
-export const loginUser = async () => {
+export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -149,3 +149,60 @@ export const logoutUser = async (req, res) => {
     });
   }
 };
+
+// User Credits
+export const userCredits = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId);
+
+    res.status(200).json({
+      success: true,
+      message: "User credits fetched successfully",
+      name: user.name,
+      credits: user.creditBalance,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const userCredits = async (req, res)=>{
+//   try{
+//         const {userId} = req.body;
+//         const user = await userModel.findById(userId);
+
+//         res.status(200).json({
+//           success: true,
+//           message: "User credits fetched successfully",
+//           name: user.name,
+//           credits: user.creditBalance,
+//         });
+
+//   }catch(error){
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// }
