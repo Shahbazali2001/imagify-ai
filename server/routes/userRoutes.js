@@ -12,10 +12,8 @@ userRouter.post("/login", loginUser);
 userRouter.post("/logout", logoutUser);
 
 // credit routes
-userRouter.post("/credits", userAuth, userCredits);
+userRouter.get("/credits", userAuth, userCredits);
 
 
-// image routes
-userRouter.post("/generate-image", userAuth, generateImage);
 
 export default userRouter;
