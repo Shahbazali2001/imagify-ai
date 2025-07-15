@@ -4,6 +4,8 @@ import { motion as Motion } from "motion/react";
 import AppContext from "../context/AppContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../api/axiosInstance";
+
 
 const Header = () => {
 
