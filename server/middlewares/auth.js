@@ -19,6 +19,7 @@ export const userAuth = async (req, res, next) => {
 
     if (tokenDecode.id) {
       req.userId = tokenDecode.id;
+      
       next();
     } else {
       return res.status(401).json({
