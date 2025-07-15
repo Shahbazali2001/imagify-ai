@@ -5,9 +5,11 @@ import { assets } from "../assets/assets";
 import AppContext from "../context/AppContext";
 
 import { motion as Motion } from "motion/react";
+import { toast } from "react-toastify";
+import axiosInstance from "../api/axiosInstance";
 
 const LogIn = () => {
-  const { setOpen } = useContext(AppContext);
+  const { setOpen, setToken, setUser, loadCreditsData } = useContext(AppContext);
   const [state, setState] = useState("Sign Up");
 
   useEffect(() => {
@@ -17,6 +19,29 @@ const LogIn = () => {
       document.body.style.overflow = "unset";
     };
   }, []);
+
+  const formSubmit = async (data) => {
+    if (!axiosInstance || !setOpen) return;
+    const { name, email, password } = data;
+
+    const payload = state === "Sign Up" ? { name, email, password } : { email, password };
+    const url = state === "Sign Up" ? "/user/register" : "/user/login";
+
+    await axiosInstance
+      .post(url, payload)
+      .then((res) => {
+        setToken(res.data.token);
+        setUser(res.data.user);
+        loadCreditsData();
+        localStorage.setItem("token", res.data.token);
+        setOpen(false);
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+        console.error("Auth error:", err);
+      });
+  };
 
   const {
     register,
@@ -43,7 +68,7 @@ const LogIn = () => {
         </p>
 
         <Motion.form
-          onSubmit={handleSubmit()}
+          onSubmit={handleSubmit(formSubmit)}
           initial={{ opacity: 0.2, y: 50 }}
           transition={{ duration: 0.5 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -55,7 +80,7 @@ const LogIn = () => {
               <input
                 type="text"
                 placeholder="Full Name"
-                {...register("fullName", { required: "Full Name is required" })}
+                {...register("name", { required: "Full Name is required" })}
                 className="text-neutral-600 bg-transparent border-none outline-none flex-1"
               />
             </div>
@@ -116,7 +141,7 @@ const LogIn = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-black text-white py-2 px-4 rounded-full w-full"
+            className="bg-black text-white py-2 px-4 rounded-full w-full cursor-pointer hover:scale-105 transition-all duration-300"
           >
             {state}
           </button>
